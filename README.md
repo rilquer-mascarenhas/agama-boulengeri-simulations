@@ -8,11 +8,10 @@ This is a repo summarizing the approach and storing the scripts utilized for tes
 We have four scenarios that basically test the relative impact of the landscape, abiotic environment and two alternative explanations for mito-nuclear discordance: male-biased dispersal and mitochondrial lineage selection.
 
 **Scenario 1: Geography only:**
-- Can we observe mito-nuclear discordance from the effect of geography alone responsible for the mitonuclear discordance?
-- Geography here means the effect of topography in restricting individual movement and gene flow (i.e., topographic Isolation-by-Resistance)
+- Can we observe mito-nuclear discordance from the effect of geography alone? Geography here means the effect of topography in restricting individual movement and gene flow (i.e., topographic Isolation-by-Resistance). This is something of a null model, to test whether geography is enough to lead to observed patterns.
 
 **Scenario 2: Geography + climatic IBR**
-- Is the observed pattern explained by a combination of the effects of topography and climatic suitability?
+- Is the observed pattern explained by a combination of the effects of topography and climatic suitability (as dictated by the species's climatic niche)?
 
 **Scenario 3: Geography + Male-biased dispersal**
 - Male individuals of *A. boulengeri* tend to disperse more than females; this behavior could potentially drive the maintenance of mtDNA divergence (i.e., females lineages don't spread spatially) while keeping the nuclear genome admixed through male dispersal.
