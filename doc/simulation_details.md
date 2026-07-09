@@ -20,44 +20,39 @@ Carrying capacity is controlled by spatial interactions dictating individual fit
 
 **Modeling scenarios**
 
-*Scenario 1* (geography only) will consist of a model where dispersal is influenced solely by topography IBR: as mentioned above, a resistance layer based on altitude will be implemented, and areas below a certain value will be inaccessible. Dispersal will be set as to avoid a large number of individuals on the edge of highland areas jumping to neighbouring highland across valleys (this may eventually happen, but it shouldn't be common given what is known about the species biology).
+*Scenario 1* (geography only) will consist of a model where dispersal is influenced solely by topography IBR: as mentioned above, a resistance layer based on altitude will be implemented, and areas below a certain value will be inaccessible. Some movement across valleys to different highlands will be allowed, as this may eventually happen (but it shouldn't be common given what is known about the species biology).
 
 > Simpler alternative: implement a shapefile of highlands as a binary raster (highland vs valley), instead of a continuous altitude raster. This would remove the need to calculate resistance-based movement, possibly making the script simpler and faster.
 
 *Scenario 2* (geography + climatic IBR) will build on scenario 1 and add environmental suitability from the species's climatic niche. Environmental suitability will affect individual fitness (alongside intrinsinc fitness due to age and spatial competition with nearby individual).
+
 > *Scenario 2* may be a lot of extra work without a lot of extra reward. If individuals are mostly restricted to highlands and are associated to rocky formations, it might be the case that there won't be a lot of variation in climatic suitability through the highlands. Adding climate may just make this model slightly better than geography. Not having a lot of difference between scenarios 1 and 2 may actually make it harder for our model-selection approach to differentiate between the two, and artificially inflate accuracy values for other models. In addition, it naturally leads to the question of why suitability is kept constant across time. Our argument is that cliamte variation across the Pleistocene (and older) wouldn't be that important, since this species is associated to these rocky formations and the overall topography has not changed significantly throughout the past. In a way, this is also an argument to not use species's climatic niche at all. This would make our hypothesis test simpler: can we explain what we observe with space only (scenario 1) or do we need to invoke some ecological/adaptive explanation (scenarios 3 and 4)?
 
 The motivation for scenarios 1 and 2 is to see whether the observed mito-nuclear discordance can arise solely from space structuring individuals in combination with some inheret properties of nuDNA. In other words, if our data is best explained by scenarios 1 and/or 2, it suggests that space is structuring mtDNA, it may structure nuDNA to some extent (will depends on simulation results), but mito-nuclear discordance arises from nuDNA having slower mutation rate, the presence of recombination and overall larger N<sub>E</sub>.
 
+*Scenario 3* (geography + male-biased dispersal) will set different mean dispersal values for males and females, allowing males to disperse more while females would be more phylopatric, leading to higher spatial differentiation in mtDNA genealogies than in nuDNA genealogies.
 
+> For this scenario to reproduce lack of structure in nuDNA, some dispersal across valleys and exchange of males among highlands needs to occur.
 
+*Scenario 4* (selection on mtDNA lineages) will be modeled by assigning each individual to a mtDNA lineage in the beginning of the simulation, based on their spatial location. The fitness of each lineage will be determined by its original location: fitness will be higher if individuals are within the original boundaries for its lineage than when they are outside those original boundaries. This mimics individuals in each lineage being selected positively at each of the different highlands. Male and female dispersal are kept equal and similar to the values in scenarios 1 and 2, making it possible for individuals to move across valleys to different highlands. Under strong selection, those individuals would have low fitness, leading to divergence across the mtDNA. In this model, for selection to occur only in mtDNA and not nuDNA, you would need high dispersal values for males with some probability of male survival and reproduction in a different highland.
 
+> Conceptually, scenario 3 is asking: is geography pushing for differentiation but male-biased dispersal is mixing up nuDNA? Scenario 4 is asking: is geography **NOT** the factor structuring genetic differentiation, but instead **selection** is simply pushing towards mtDNA differentiation where, otherwise, it would simply observe complete admixture (even with the existing topography)?
 
-Scenario 1, then 2, then 3, then 4
-Modeling geography only
-Modeling geography/topography and climatic IBR (just add the SDMs)
-
-Modeling male-biased dispersal
-
-Modeling selection
-For model 4 (modeling selection): Each individual will be assigned to a mtDNA lineage in the beginning of the simulation, based on their spatial location. Each lineage will have a different fitness across space, based on latitude and longitude values. This mimics individuals in each lineage being selected positively at each of the different highlands. Divergence is maintained in the simulation by this selection (if individuals move across, they die, so genealogies don't cross.)
+> The way we are simulating things here (i.e., using SLiM + recapitation), it gets a little harder to distinguish between scenarios 3 and 4. For a scenario of mito-nuclear differentiation arising from selection on mtDNA, males would still need to be dispersing more than females (i.e., nuDNA is still admixed due to this male dispersal). This makes this scenario similar to scenario 3; the only difference is that in scenario 3 mtDNA divergence arises from drift while in scenario 4 it arises from selection. Selection is usually stronger than drift, meaning we could differentiate both by how long it took for the divergence to occur. In some cases, drift can be equally or more strong than selection in driving differentiation (mostly in cases where Ne is very low and µ is very high). We could try to tease those two apart, for sure, but the point is that to capture that difference we might need to fully simulate selection on SLiM (i.e., ditching `msprime`).
 
 **Duration and recording**
 How long? 100k generations maybe?
 
-#### Simulations in SLiM
+#### Simulations in `msprime`
 
+- Ne will be scaled to match empirical values. nuDNA Ne is four times that of mtDNA ne.
+- Mutation and recombination rates will follow traditional rates for mtDNA and nuclear DNA.
+- All rates will be [scaled by generation time](https://tskit.dev/pyslim/docs/latest/time_units.html), in order to convert from SLiM genealogies in nonWF to `msprime` genealogies in WF.
 
-Recapitation in msprime
-- Scaling Ne to match empirical values
-	- Nuclear Ne is four times that of mtDNA Ne.
-	- Mutation rate (µ) will follow traditional rates for mtDNA and nuclear DNA.
-	- Both Ne and µ need to be [scaled by generation time](https://tskit.dev/pyslim/docs/latest/time_units.html) (to convert from SLiM nonWF to `msprime` WF)
-
-Summary statistics
+**Summary statistics**
 - Pi per lineage
 - Pi over space
 - Fst across major lineages
 - Pairwise Dxy across localities/major lineages
 - Site Frequency Spectrum of each lineage
-	- Maybe also joint pairwise SFS?
+- Pairwise joint SFS?
