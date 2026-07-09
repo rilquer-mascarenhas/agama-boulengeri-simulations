@@ -2,7 +2,6 @@
 
 Description and scripts for testing different hypotheses for mito-nuclear discordance in *Agama boulengeri*
 
-
 ### Scenarios:
 **(aka: what are the hypotheses we are trying to test with [SLiM](https://github.com/messerlab/slim)?)**
 
