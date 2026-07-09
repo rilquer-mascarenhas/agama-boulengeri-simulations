@@ -1,6 +1,6 @@
 # Spatial simulations of *Agama boulengeri*
 
-Description and scripts for testing different hypotheses for mito-nuclear discordance in *Agama boulengeri*
+This is a repo summarizing the approach and storing the scripts utilized for testing different hypotheses regarding observed mito-nuclear discordance in *Agama boulengeri*.
 
 ### Scenarios:
 **(aka: what are the hypotheses we are trying to test with [SLiM](https://github.com/messerlab/slim)?)**
